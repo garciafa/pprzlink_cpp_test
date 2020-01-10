@@ -48,7 +48,7 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <pprzlink/IvyPprzLink.h>
+#include <pprzlink/IvyLink.h>
 
 void printMsgInfo(pprzlink::MessageDictionary dict, std::string const & name)
 {
@@ -66,7 +66,7 @@ void messageCb(std::string ac_id, pprzlink::Message msg)
   std::cout << ac_id << " sent " << msg.toString() << std::endl;
 }
 
-void verboseBind(pprzlink::IvyPprzLink &link,const pprzlink::MessageDictionary &dict, std::string msgName)
+void verboseBind(pprzlink::IvyLink &link, const pprzlink::MessageDictionary &dict, std::string msgName)
 {
   std::cout << "Binding to " << msgName << "\n";
   link.BindMessage(dict.getDefinition(msgName),messageCb);
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
   try
   {
     pprzlink::MessageDictionary dict("/home/garciafa/paparazzi/var/messages.xml");
-    pprzlink::IvyPprzLink link(dict,"TestPprzLinkIvy","127.255.255.255:2010",true);
+    pprzlink::IvyLink link(dict, "TestPprzLinkIvy", "127.255.255.255:2010", true);
 
     link.BindMessage(dict.getDefinition("KEY_EXCHANGE_GCS"),messageCb);
     link.BindMessage(dict.getDefinition("SHAPE"),messageCb);
@@ -109,9 +109,12 @@ int main(int argc, char **argv)
     link.BindMessage(dict.getDefinition("ALIVE"),messageCb);
     link.BindMessage(dict.getDefinition("GPS_INT"),messageCb);
 
+    sleep(1);
     pprzlink::Message msg(dict.getDefinition("INFO_MSG"));
     msg.addField("msg",std::string("Coucou la bas"));
-    link.sendMessage("ground",msg);
+
+    msg.setSenderId("ground");
+    link.sendMessage(msg);
 /*
     sleep(1);
 

@@ -39,10 +39,14 @@ INCLUDE_FLAG=-I$(INCLUDE_DIR)
 CXXFLAGS= --std=c++17 -Wall -fPIC -flto $(INCLUDE_FLAG)
 LDFLAGS= -L$(LIB_DIR) -lpprzlink++ -livy -lpthread -ltinyxml2
 
-all: installcpp testPprzlink_Ivy testPprzlink_Serial
+all: installcpp testPprzlink_Ivy testPprzlink_Serial QtMessages
 
 installcpp:
 	$(Q)DESTDIR=$(PWD) make -C $(PPRZLINK_DIR) libpprzlink++-install
+
+QtMessages: $(OBJ_MESSAGES)
+	$(Q)qmake QtMessagesSrc/QtMessages.pro -o QtMessagesSrc/Makefile
+	$(Q)${MAKE} -C QtMessagesSrc
 
 testPprzlink_Ivy: $(OBJ_IVY)
 	$(Q)$(CXX) -Wl,-rpath,$(LIB_DIR) $(CXXFLAGS) -o $@ $< $(LDFLAGS)
@@ -51,6 +55,6 @@ testPprzlink_Serial: $(OBJ_SERIAL)
 	$(Q)$(CXX) -Wl,-rpath,$(LIB_DIR) $(CXXFLAGS) -o $@ $< $(LDFLAGS)
 
 clean:
-	$(Q)rm -f *.o testPprzlink_Ivy testPprzlink_Serial *~
+	$(Q)rm -f *.o testPprzlink_Ivy testPprzlink_Serial QtMessages *~
 
 .PHONY: clean installcpp all

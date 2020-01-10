@@ -50,6 +50,8 @@
 #include <iostream>
 #include <pprzlink/MessageDictionary.h>
 #include <pprzlink/Message.h>
+#include <pprzlink/Device.h>
+#include <pprzlink/Transport.h>
 
 void printMsgInfo(pprzlink::MessageDictionary dict, std::string const & name)
 {
@@ -74,6 +76,8 @@ int main(int argc, char **argv)
     pprzlink::MessageDictionary dict("/home/garciafa/paparazzi/var/messages.xml");
 
     // TODO Create a serial line link with transparent transport
+    pprzlink::Device dev;
+    pprzlink::Transport<pprzlink::Device> *t;
 
     // Wait for messages incoming messages
     
