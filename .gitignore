@@ -3,4 +3,5 @@ testPprzlink_Serial
 *~
 *.o
 C++
-
+QtMessagesSrc/*moc*
+QtMessages

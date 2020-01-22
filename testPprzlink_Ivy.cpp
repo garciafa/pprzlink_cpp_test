@@ -61,7 +61,7 @@ void printMsgInfo(pprzlink::MessageDictionary dict, std::string const & name)
   }
 }
 
-void messageCb(std::string ac_id, pprzlink::Message msg)
+void ivyMessageCallback(std::string ac_id, pprzlink::Message msg)
 {
   std::cout << ac_id << " sent " << msg.toString() << std::endl;
 }
@@ -69,7 +69,7 @@ void messageCb(std::string ac_id, pprzlink::Message msg)
 void verboseBind(pprzlink::IvyLink &link, const pprzlink::MessageDictionary &dict, std::string msgName)
 {
   std::cout << "Binding to " << msgName << "\n";
-  link.BindMessage(dict.getDefinition(msgName),messageCb);
+  link.BindMessage(dict.getDefinition(msgName), ivyMessageCallback);
 }
 
 int main(int argc, char **argv)
@@ -79,35 +79,35 @@ int main(int argc, char **argv)
     pprzlink::MessageDictionary dict("/home/garciafa/paparazzi/var/messages.xml");
     pprzlink::IvyLink link(dict, "TestPprzLinkIvy", "127.255.255.255:2010", true);
 
-    link.BindMessage(dict.getDefinition("KEY_EXCHANGE_GCS"),messageCb);
-    link.BindMessage(dict.getDefinition("SHAPE"),messageCb);
-    link.BindMessage(dict.getDefinition("INTRUDER"),messageCb);
-    link.BindMessage(dict.getDefinition("DC_SHOT"),messageCb);
-    link.BindMessage(dict.getDefinition("TCAS_RA"),messageCb);
-    link.BindMessage(dict.getDefinition("AUTOPILOT_VERSION"),messageCb);
-    link.BindMessage(dict.getDefinition("INFO_MSG"),messageCb);
-    link.BindMessage(dict.getDefinition("TELEMETRY_ERROR"),messageCb);
-    link.BindMessage(dict.getDefinition("BAT_LOW"),messageCb);
-    link.BindMessage(dict.getDefinition("SVSINFO"),messageCb);
-    link.BindMessage(dict.getDefinition("WAYPOINT_MOVED"),messageCb);
-    link.BindMessage(dict.getDefinition("INFLIGH_CALIB"),messageCb);
-    link.BindMessage(dict.getDefinition("TELEMETRY_STATUS"),messageCb);
-    link.BindMessage(dict.getDefinition("INFLIGH_CALIB"),messageCb);
-    link.BindMessage(dict.getDefinition("ENGINE_STATUS"),messageCb);
-    link.BindMessage(dict.getDefinition("FLY_BY_WIRE"),messageCb);
-    link.BindMessage(dict.getDefinition("WIND"),messageCb);
-    link.BindMessage(dict.getDefinition("DL_VALUES"),messageCb);
-    link.BindMessage(dict.getDefinition("AP_STATUS"),messageCb);
-    link.BindMessage(dict.getDefinition("SURVEY_STATUS"),messageCb);
-    link.BindMessage(dict.getDefinition("SEGMENT_STATUS"),messageCb);
-    link.BindMessage(dict.getDefinition("CIRCLE_STATUS"),messageCb);
-    link.BindMessage(dict.getDefinition("CAM_STATUS"),messageCb);
-    link.BindMessage(dict.getDefinition("FLIGHT_PARAM"),messageCb);
-    link.BindMessage(dict.getDefinition("NEW_AIRCRAFT"),messageCb);
-    link.BindMessage(dict.getDefinition("CONFIG"),messageCb);
+    link.BindMessage(dict.getDefinition("KEY_EXCHANGE_GCS"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("SHAPE"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("INTRUDER"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("DC_SHOT"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("TCAS_RA"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("AUTOPILOT_VERSION"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("INFO_MSG"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("TELEMETRY_ERROR"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("BAT_LOW"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("SVSINFO"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("WAYPOINT_MOVED"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("INFLIGH_CALIB"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("TELEMETRY_STATUS"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("INFLIGH_CALIB"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("ENGINE_STATUS"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("FLY_BY_WIRE"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("WIND"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("DL_VALUES"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("AP_STATUS"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("SURVEY_STATUS"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("SEGMENT_STATUS"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("CIRCLE_STATUS"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("CAM_STATUS"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("FLIGHT_PARAM"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("NEW_AIRCRAFT"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("CONFIG"), ivyMessageCallback);
 
-    link.BindMessage(dict.getDefinition("ALIVE"),messageCb);
-    link.BindMessage(dict.getDefinition("GPS_INT"),messageCb);
+    link.BindMessage(dict.getDefinition("ALIVE"), ivyMessageCallback);
+    link.BindMessage(dict.getDefinition("GPS_INT"), ivyMessageCallback);
 
     sleep(1);
     pprzlink::Message msg(dict.getDefinition("INFO_MSG"));

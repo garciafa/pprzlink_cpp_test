@@ -53,11 +53,14 @@ OBJECTS_DIR   = ./
 SOURCES       = MessagesMainWindow.cpp \
 		QMessagesList.cpp \
 		QMessageView.cpp \
-		QtMessages.cpp 
+		QtMessages.cpp \
+		../C++/share/src/ivyqtloop.cpp moc_ivyqtloop.cpp
 OBJECTS       = MessagesMainWindow.o \
 		QMessagesList.o \
 		QMessageView.o \
-		QtMessages.o
+		QtMessages.o \
+		ivyqtloop.o \
+		moc_ivyqtloop.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -136,10 +139,12 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		QtMessages.pro MessagesMainWindow.h \
 		QMessagesList.h \
-		QMessageView.h MessagesMainWindow.cpp \
+		QMessageView.h \
+		../C++/share/src/ivyqtloop.h MessagesMainWindow.cpp \
 		QMessagesList.cpp \
 		QMessageView.cpp \
-		QtMessages.cpp
+		QtMessages.cpp \
+		../C++/share/src/ivyqtloop.cpp
 QMAKE_TARGET  = QtMessages
 DESTDIR       = ../
 TARGET        = ../QtMessages
@@ -328,8 +333,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents MessagesMainWindow.h QMessagesList.h QMessageView.h $(DISTDIR)/
-	$(COPY_FILE) --parents MessagesMainWindow.cpp QMessagesList.cpp QMessageView.cpp QtMessages.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents MessagesMainWindow.h QMessagesList.h QMessageView.h ../C++/share/src/ivyqtloop.h $(DISTDIR)/
+	$(COPY_FILE) --parents MessagesMainWindow.cpp QMessagesList.cpp QMessageView.cpp QtMessages.cpp ../C++/share/src/ivyqtloop.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -361,8 +366,14 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe --std=c++17 -Wall -fPIC -flto -O2 -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: moc_ivyqtloop.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc_ivyqtloop.cpp
+moc_ivyqtloop.cpp: ../C++/share/src/ivyqtloop.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/garciafa/Documents/PROG/paparazzi_messages/TEST_C++/QtMessagesSrc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/garciafa/Documents/PROG/paparazzi_messages/TEST_C++/QtMessagesSrc -I/home/garciafa/Documents/PROG/paparazzi_messages/TEST_C++/C++/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../C++/share/src/ivyqtloop.h -o moc_ivyqtloop.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -375,7 +386,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean 
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
@@ -424,6 +435,12 @@ QtMessages.o: QtMessages.cpp MessagesMainWindow.h \
 		../C++/include/ivy-c++/Ivy.h \
 		../C++/include/ivy-c++/IvyCallback.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o QtMessages.o QtMessages.cpp
+
+ivyqtloop.o: ../C++/share/src/ivyqtloop.cpp ../C++/share/src/ivyqtloop.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ivyqtloop.o ../C++/share/src/ivyqtloop.cpp
+
+moc_ivyqtloop.o: moc_ivyqtloop.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ivyqtloop.o moc_ivyqtloop.cpp
 
 ####### Install
 
